@@ -34,6 +34,7 @@ class OAuth2Client {
   String refreshUrl;
   String authorizeUrl;
   Map<String, String> _accessTokenRequestHeaders;
+  Map<String, String> _refreshTokenRequestHeaders;
 
   WebAuth webAuthClient;
 
@@ -164,6 +165,7 @@ class OAuth2Client {
     if (httpClient == null) httpClient = http.Client();
 
     http.Response response = await httpClient.post(_getRefreshUrl(),
+        headers: _refreshTokenRequestHeaders,
         body: {'grant_type': 'refresh_token', 'refresh_token': refreshToken});
 
     return AccessTokenResponse.fromHttpResponse(response);
@@ -228,5 +230,9 @@ class OAuth2Client {
 
   set accessTokenRequestHeaders(Map<String, String> headers) {
     _accessTokenRequestHeaders = headers;
+  }
+
+  set refreshTokenRequestHeaders(Map<String, String> headers) {
+    _refreshTokenRequestHeaders = headers;
   }
 }
